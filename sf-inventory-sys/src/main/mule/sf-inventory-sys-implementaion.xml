@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ol-reservation-proc="http://www.mulesoft.org/schema/mule/ol-reservation-proc" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ol-reservation-proc http://www.mulesoft.org/schema/mule/ol-reservation-proc/current/mule-ol-reservation-proc.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<sub-flow name="sf-get-inventories-subFlow" doc:id="267d9071-4dc3-4b51-bc4e-aec4234091e1" >
+		<logger level="INFO" doc:name="Logger" doc:id="5ff049bd-19c0-4c30-988a-3076ba57d21a" />
+		<wsc:consume doc:name="Consume" doc:id="c5c336b4-3ad5-4662-8efc-3650af2c15be" config-ref="Web_Service_Consumer_Config" operation="ListInventory"/>
+		<ee:transform doc:name="Transform Message" doc:id="d7c1fd02-ba59-4455-934e-69dda2b59069" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns2 http://mulesoft.org/tshirt-service
+---
+valuesOf(payload.body.ns2#ListInventoryResponse) map {
+    productCode: $.productCode,
+    size: $.size,
+    description: $.description,
+    stock: $.count as Number // Convert string to number
+} 
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="fcb697fa-7260-4e57-8ea9-e46fd3f73f22" />
+	</sub-flow>
+	</mule>

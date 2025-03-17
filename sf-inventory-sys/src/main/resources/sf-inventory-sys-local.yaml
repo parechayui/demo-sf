@@ -1,0 +1,54 @@
+api:
+  id: "18577127"
+http-listener:
+  protocol: "HTTP"
+  port: "8383"
+  host: "0.0.0.0"
+smtp:
+  host: "postman.olcc.lan"
+  port: "25"
+  from: "donotreply-mule@holidayinnclub.com" 
+  to: "ResortTechSupport@holidayinnclub.com"
+  subject: "[ALERT]-Error Message Hicv-erevmax-exp-local"
+  emailYes: "Yes"
+reservation-proc:
+ reservation_host: "apirtf.orangelake.com"
+ reservation_port: "443"
+ reservation_protocol: "HTTPS"
+ reservation_basePath: "/ol-reservation-proc"
+ reservation_responseTimeOut: "120000"
+ #reservation_host: "localhost"
+ #reservation_port: "8081"
+ #reservation_protocol: "HTTP"
+ #reservation_basePath: "/"
+ #responseTimeOut: "1200000"
+ 
+ol-payments-proc:
+  host: "apirtf.orangelake.com"
+  port: "443"
+  protocol: "HTTPS"
+  basePath: "/ol-payments-proc"
+  responseTimeout: "120000" 
+httpRequest:
+  ccWebApi:
+    protocol: "HTTPS"
+    host: "hicvccswebqa.olcc.lan"
+    port: "443"
+    basepath: "CCWebApiApplication"
+    insecure: "false"
+    responseTimeoutMS: "120000"
+    transactionTimeoutMS: "120000"
+  olResProc:
+    protocol: "HTTPS"
+    host: "apirtf.orangelake.com"
+    port: "443"
+    basepath: "/ol-reservation-proc"
+    insecure: "false"
+    responseTimeoutMS: "1200000"
+    transactionTimeoutMS: "1200000"     
+pega-proc:
+  host: "apirtf.orangelake.com"
+  port: "443"
+  basePath: "/hicv-pega-proc"
+  protocol: "HTTPS"
+  responseTimeOut: "60000"      
