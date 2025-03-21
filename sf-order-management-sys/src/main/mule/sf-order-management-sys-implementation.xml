@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="sf-get-order-status" doc:id="485c9b1d-5326-419d-925e-73de494e17f2" >
+		<logger level="INFO" doc:name="Logger" doc:id="ce0a75e9-4afd-4d31-9a2b-4ad39eafcff4" message='"Order Process Started"'/>
+		<ee:transform doc:name="Transform Message" doc:id="dc9d7444-9e54-42f9-ba7d-c9ba841e04db" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml writeDeclaration=false
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+ns tsh http://mulesoft.org/tshirt-service
+
+---
+soapenv#Envelope: {
+  soapenv#Header: {
+    tsh#AuthenticationHeader: {
+      tsh#apiKey: "YOUR_API_KEY"
+    }
+  },
+  soapenv#Body: {
+    tsh#TrackOrder: {
+      tsh#orderId: payload.orderId,
+      tsh#email: payload.email
+    }
+  }
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="TrackOrder" doc:name="Consume" doc:id="6f3eb211-553f-4e30-9ee8-b2f1c88065d0" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="6dd897ac-57b6-41a7-82a6-3e9b24cd8c82" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var soapResponse = payload."soap:Envelope"."soap:Body"."ns2:TrackOrderResponse"
+---
+{
+  orderId: soapResponse.orderId,
+  size: soapResponse.size,
+  status: soapResponse.status
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="504bdf78-e343-487d-be67-537668930673" message='"Order Process Completed"'/>
+	</sub-flow>
+	<sub-flow name="sf-place-order" doc:id="ba37050f-3d2a-422c-bae1-d789b35d1d00" >
+		<logger level="INFO" doc:name="Logger" doc:id="c3413f52-7e9b-47cb-a061-64be0b284a46" message='"Order Initiated"' />
+		<ee:transform doc:name="Transform Message" doc:id="622d572c-67bc-4ed1-8e85-31d4860c7c98">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml writeDeclaration=false
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+ns tsh http://mulesoft.org/tshirt-service
+---
+soapenv#Envelope: {
+  soapenv#Header: {
+    tsh#AuthenticationHeader: {
+      tsh#apiKey: "YOUR_API_KEY"
+    }
+  },
+  soapenv#Body: {
+    tsh#OrderTshirt: {
+      tsh#size: payload.size,
+      tsh#email: payload.email,
+      tsh#name: payload.name,
+      tsh#address1: payload.address1,
+      tsh#address2: payload.address2,
+      tsh#city: payload.city,
+      tsh#stateOrProvince: payload.stateOrProvince,
+      tsh#postalCode: payload.postalCode,
+      tsh#country: payload.country,
+      tsh#productCode: payload.productCode
+    }
+  }
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="OrderTshirt" doc:name="Consume" doc:id="1180d534-bfca-497f-a429-a65ac9785617" config-ref="Web_Service_Consumer_Config" />
+		<ee:transform doc:name="Transform Message" doc:id="9eb9220a-78e5-4033-b89e-84629112bb71" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var soapResponse = payload."soap:Envelope"."soap:Body"."ns2:OrderTshirtResponse"
+---
+{
+  orderId: soapResponse.orderId
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e021099b-ca0e-4e54-a961-4de2b87687ff" message='#["Order Placed"]' />
+	</sub-flow>
+</mule>

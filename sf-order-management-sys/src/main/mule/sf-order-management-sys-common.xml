@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<http:listener-config name="sf-order-management-sys-httpListenerConfig" doc:name="HTTP Listener config" doc:id="fad7efe7-b236-451d-86c3-698b68e9c083" >
+		<http:listener-connection host="localhost" port="8082" />
+	</http:listener-config>
+	<api-gateway:autodiscovery apiId="20261614" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="c1e2506f-c2a6-424e-bf7a-2e67b981aa71" flowRef="sf-order-management-sys-main" />
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="cf47d08c-5db7-4556-8bab-782aa286cead" >
+		<wsc:connection wsdlLocation="https://tshirts.demos.mulesoft.com/?wsdl" service="TshirtServicePortTypeService" port="TshirtServicePortTypePort" address="https://tshirts.demos.mulesoft.com/"/>
+	</wsc:config>
+</mule>

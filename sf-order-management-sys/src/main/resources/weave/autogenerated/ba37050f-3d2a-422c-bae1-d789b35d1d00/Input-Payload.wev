@@ -1,0 +1,15 @@
+%dw 2.0
+
+type auto_ba37050f_3d2a_422c_bae1_d789b35d1d00_Input_Payload = {
+  country: String, 
+  size: String, 
+  stateOrProvince: String, 
+  address2?: String, 
+  city: String, 
+  address1: String, 
+  postalCode: String, 
+  name: String, 
+  email: String, 
+  _?: Any
+}
+
