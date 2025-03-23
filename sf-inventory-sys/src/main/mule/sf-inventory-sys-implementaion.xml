@@ -8,11 +8,27 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/ol-reservation-proc http://www.mulesoft.org/schema/mule/ol-reservation-proc/current/mule-ol-reservation-proc.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 	<sub-flow name="sf-get-inventories-subFlow" doc:id="267d9071-4dc3-4b51-bc4e-aec4234091e1" >
-		<logger level="INFO" doc:name="Logger" doc:id="5ff049bd-19c0-4c30-988a-3076ba57d21a" />
-		<wsc:consume doc:name="Consume" doc:id="c5c336b4-3ad5-4662-8efc-3650af2c15be" config-ref="Web_Service_Consumer_Config" operation="ListInventory"/>
-		<ee:transform doc:name="Transform Message" doc:id="d7c1fd02-ba59-4455-934e-69dda2b59069" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<logger level="INFO" doc:name="Logger" doc:id="5ff049bd-19c0-4c30-988a-3076ba57d21a" message='#[%dw 2.0&#10;output application/json&#10;---&#10; "sf-get-inventories-subFlow, logId: " ++ "001/002. " ++ "Request received to retrieve inventory details for correlationId : " ++ correlationId]'/>
+		<try doc:name="Try" doc:id="3fdc3a3d-28f6-47f5-8487-243ef9881329" >
+			<wsc:consume doc:name="Consume" doc:id="c5c336b4-3ad5-4662-8efc-3650af2c15be" config-ref="Web_Service_Consumer_Config" operation="ListInventory" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c3d71b71-1240-48c1-9bdb-8867576b8ca3" type="WSC:BAD_REQUEST, WSC:BAD_RESPONSE, WSC:CONNECTIVITY">
+					<ee:transform doc:name="Transform Message" doc:id="2afd0c41-ad5e-49f5-927c-ffdcc3867cfd" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"message": "server is down, please reach out to concerned team"
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Transform Message" doc:id="d7c1fd02-ba59-4455-934e-69dda2b59069">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ns ns2 http://mulesoft.org/tshirt-service
 ---
@@ -27,6 +43,6 @@ valuesOf(payload.body.ns2#ListInventoryResponse) map {
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="fcb697fa-7260-4e57-8ea9-e46fd3f73f22" />
+		<logger level="INFO" doc:name="Logger" doc:id="2dc303e2-1d24-47d4-ad68-b03fcfe7974d" message="#[payload]"/>
 	</sub-flow>
 	</mule>

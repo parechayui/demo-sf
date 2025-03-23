@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sf-order-management-sys="http://www.mulesoft.org/schema/mule/sf-order-management-sys" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/sf-order-management-sys http://www.mulesoft.org/schema/mule/sf-order-management-sys/current/mule-sf-order-management-sys.xsd">
+	<flow name="sf-customer-procFlow" doc:id="3f0e4ff8-de2b-480b-a4ca-93a5f3c9f07d" initialState="started">
+		<sf-order-management-sys:get-orders doc:name="Get orders" doc:id="0ace7b00-b56e-4176-a876-b20144e3ca97" />
+		<flow-ref doc:name="Flow Reference" doc:id="2f5e02ba-40e1-45dc-8e48-032720dfcf26" />
+	</flow>
+</mule>

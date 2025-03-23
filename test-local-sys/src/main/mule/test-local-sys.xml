@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="test-local-sysFlow1" doc:id="25792358-42f1-4cc6-b0f2-0144bec2f14c" >
+		<async doc:name="Async" doc:id="ca16c844-24b3-4b27-9802-d298e921d296" />
+	</flow>
+	<flow name="test-local-sysFlow" doc:id="1c2ce985-db28-407b-a344-3279f6417266" />
+</mule>

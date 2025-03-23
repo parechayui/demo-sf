@@ -7,31 +7,26 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="sf-get-order-status" doc:id="485c9b1d-5326-419d-925e-73de494e17f2" >
 		<logger level="INFO" doc:name="Logger" doc:id="ce0a75e9-4afd-4d31-9a2b-4ad39eafcff4" message='"Order Process Started"'/>
-		<ee:transform doc:name="Transform Message" doc:id="dc9d7444-9e54-42f9-ba7d-c9ba841e04db" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml writeDeclaration=false
-ns soapenv http://schemas.xmlsoap.org/soap/envelope/
-ns tsh http://mulesoft.org/tshirt-service
-
----
-soapenv#Envelope: {
-  soapenv#Header: {
-    tsh#AuthenticationHeader: {
-      tsh#apiKey: "YOUR_API_KEY"
-    }
-  },
-  soapenv#Body: {
-    tsh#TrackOrder: {
-      tsh#orderId: payload.orderId,
-      tsh#email: payload.email
-    }
-  }
-}
-]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<wsc:consume operation="TrackOrder" doc:name="Consume" doc:id="6f3eb211-553f-4e30-9ee8-b2f1c88065d0" config-ref="Web_Service_Consumer_Config"/>
+		
+		<logger level="INFO" doc:name="Logger" doc:id="68a98e35-34e9-4ac7-a564-04342b2f2800" message="#[payload]"/>
+	  
+	  <wsc:consume operation="TrackOrder" config-ref="Web_Service_Consumer_Config">
+    <wsc:message>
+        <wsc:body><![CDATA[#[payload]]]></wsc:body>
+        <wsc:headers><![CDATA[#[{
+            "tsh:AuthenticationHeader": {
+                "tsh:apiKey": "YOUR_API_KEY"
+            }
+        }]]]></wsc:headers>
+    </wsc:message>
+    <wsc:transport-headers>
+        <wsc:transport-header key="SOAPAction" value="http://mulesoft.org/tshirt-service/track-order" />
+        <wsc:transport-header key="apiKey" value="YOUR_API_KEY" />
+        <wsc:transport-header key="Content-Type" value="text/xml" />
+    </wsc:transport-headers>
+</wsc:consume>
+	  
+		<logger level="INFO" doc:name="Logger" doc:id="856b9ac5-81c1-4dc5-8bac-3b5c41a63999" message="#[payload]" />
 		<ee:transform doc:name="Transform Message" doc:id="6dd897ac-57b6-41a7-82a6-3e9b24cd8c82" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -81,7 +76,11 @@ soapenv#Envelope: {
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume operation="OrderTshirt" doc:name="Consume" doc:id="1180d534-bfca-497f-a429-a65ac9785617" config-ref="Web_Service_Consumer_Config" />
+		<logger level="INFO" doc:name="Logger" doc:id="34cc7efb-ecfe-4e41-8c68-a27fe05ab1a6" message="#[payload]"/>
+		<wsc:consume operation="OrderTshirt" doc:name="Consume" doc:id="1180d534-bfca-497f-a429-a65ac9785617" config-ref="Web_Service_Consumer_Config">
+			<wsc:message-customizations forceXMLProlog="true" />
+		</wsc:consume>
+		<logger level="INFO" doc:name="Logger" doc:id="df210514-9823-487f-888d-0cf354dd7ef0" message="#[payload]"/>
 		<ee:transform doc:name="Transform Message" doc:id="9eb9220a-78e5-4033-b89e-84629112bb71" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

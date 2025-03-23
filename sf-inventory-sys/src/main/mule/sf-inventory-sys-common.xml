@@ -6,13 +6,13 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
-	<http:listener-config name="sf-inventory-sys-httpListenerConfig" doc:name="HTTP Listener config" doc:id="61ff14a9-ba29-404b-8030-ffff60f47c31" >
-		<http:listener-connection host="localhost" port="8081" />
+	<http:listener-config name="sf_HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="61ff14a9-ba29-404b-8030-ffff60f47c31" >
+		<http:listener-connection host="0.0.0.0" port="8081"/>
 	</http:listener-config>
 	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="5c17dbf6-016d-4b3e-8049-1fa71a551b2d" >
 		<wsc:connection wsdlLocation="https://tshirts.demos.mulesoft.com/?wsdl" service="TshirtServicePortTypeService" port="TshirtServicePortTypePort" address="https://tshirts.demos.mulesoft.com/" >
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
-	<api-gateway:autodiscovery apiId="1212312" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="a9fd51a9-38e9-403e-91f4-4dd52260ad0e" flowRef="sf-inventory-sys-main" />
+	<api-gateway:autodiscovery apiId="20264190" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="a9fd51a9-38e9-403e-91f4-4dd52260ad0e" flowRef="sf-inventory-sys-main" />
 </mule>

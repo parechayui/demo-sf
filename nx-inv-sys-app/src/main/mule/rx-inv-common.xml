@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<api-gateway:autodiscovery apiId="20264402" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="5841d593-5983-4b3f-8b9c-d28040e8f68f" flowRef="rx-inventory-sys-spec-main" />
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="3d8d8c60-0bd2-4dcb-ba48-617e7a2a3daf" >
+		<wsc:connection wsdlLocation="https://tshirts.demos.mulesoft.com/?wsdl" service="TshirtServicePortTypeService" port="TshirtServicePortTypePort" address="https://tshirts.demos.mulesoft.com/"/>
+	</wsc:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f15bae99-e0f3-41b0-8de0-8536ab034e96" >
+		<http:listener-connection host="0.0.0.0" port="8081" readTimeout="300000" />
+	</http:listener-config>
+</mule>

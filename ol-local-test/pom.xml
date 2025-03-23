@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>2227ed09-e2b9-4c57-a5d2-49c159a39c4c</groupId>
-	<artifactId>sf-inventory-sys-app</artifactId>
-	<version>1.0.4</version>
+	<groupId>com.mycompany</groupId>
+	<artifactId>ol-local-test</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>sf-inventory-sys</name>
+	<name>ol-local-test</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,9 +29,6 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<configuration>
-					<classifier>---- select project type ----</classifier>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -47,31 +44,6 @@
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.5</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>2227ed09-e2b9-4c57-a5d2-49c159a39c4c</groupId>
-			<artifactId>rx-inventory-sys-spec</artifactId>
-			<version>1.0.1</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.connectors</groupId>
-			<artifactId>mule-wsc-connector</artifactId>
-			<version>1.11.0</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.modules</groupId>
-			<artifactId>mule-apikit-module</artifactId>
-			<version>1.11.5</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>2227ed09-e2b9-4c57-a5d2-49c159a39c4c</groupId>
-			<artifactId>mule-plugin-sf-order-management-sys</artifactId>
-			<version>1.0.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5aed163c-b66a-42f8-affe-da2655ccae0f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="6434cceb-6519-41e9-bb75-00e5b154ac5e" >
+		<wsc:connection wsdlLocation="https://tshirts.demos.mulesoft.com/?wsdl" service="TshirtServicePortTypeService" port="TshirtServicePortTypePort" address="https://tshirts.demos.mulesoft.com/" />
+	</wsc:config>
+	<flow name="nx-text-appFlow" doc:id="a9587f01-6791-48bc-8252-5ccd9c0327b5" >
+		<http:listener doc:name="Listener" doc:id="226d4c7e-c4ca-4dd3-a12b-b39bd8f04cff" config-ref="HTTP_Listener_config" path="/api/inventories"/>
+		<wsc:consume doc:name="Consume" doc:id="39fef944-bf71-4cd3-b8f3-c7355d5a8725" config-ref="Web_Service_Consumer_Config" operation="ListInventory"/>
+		<ee:transform doc:name="Transform Message" doc:id="bf21a5a4-94ba-4f02-b935-f01f7d78fcc3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns ns2 http://mulesoft.org/tshirt-service
+---
+valuesOf(payload.body.ns2#ListInventoryResponse) map {
+    productCode: $.productCode,
+    size: $.size,
+    description: $.description,
+    stock: $.count as Number // Convert string to number
+} 
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
