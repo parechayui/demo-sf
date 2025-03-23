@@ -133,18 +133,6 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="sf-get-order-status" doc:id="9616775c-aa7d-4d7c-8795-59b8a1c027b1" name="sf-get-order-status"/>
-		<ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  orderId: 5128,
-  size: "M",
-  status: "CREATED"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     </flow>
     <flow name="post:\orders:application\json:sf-order-management-sys-config">
         <ee:transform doc:name="Transform Message" doc:id="206d804d-afe5-4930-ac10-775dd7b6ea03" >
@@ -156,15 +144,5 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="sf-place-order" doc:id="62b3dc30-29e0-4961-8d0e-43353a5af007" name="sf-place-order"/>
-		<ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  orderId: "123456"
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     </flow>
 </mule>
